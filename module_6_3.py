@@ -40,7 +40,7 @@ class AquaticAnimal(Animal):
     _DEGREE_OF_DANGER = 3
 
     def dive_in(self,dz):
-        dz_2 = ((dz * self.speed)-abs(dz))*0.5*self.speed
+        dz_2 = int(self._cords[2]-abs(dz)*0.5*self.speed)
         self._cords[2] = max(dz_2,0)
 
 class PoisonousAnimal(Animal):
