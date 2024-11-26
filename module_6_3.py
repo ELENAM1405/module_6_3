@@ -1,69 +1,74 @@
 from random import randint
-class Animal:#класс описывающий животных
-    live = True
-    sound = None # звук(изначально отсутствует)
-    _DEGREE_OF_DANGER = 0 # степень опасности существа
 
-    def __init__(self,_cords,speed):
-        super().__init__(_cords,speed)
-        self.cords = _cords
-        self.cords = [0, 0, 0] # координаты в пространстве
-        self.speed = speed # скорость передвижения существа
+
+class Animal:
+    live = True
+    sound = None
+    _DEGREE_OF_DANGER = 0
+    def __init__(self,speed):
+        self._cords = [0, 0, 0]
+        self.speed = speed
 
     def move(self, dx, dy, dz):
-        self.cords = [dx, dy, dz]
-        for i in range(len(self.cords)):
-            self.cords[int(i)] * self.speed
-            if dz == 0:
-                print(''' It's too deep , i can't dive :( ''' )
+        dx_1 = dx * self.speed
+        dy_1 = dy * self.speed
+        dz_1 = dz * self.speed
+        if dz_1 < 0:
+            print(" It's too deep , i can't dive :( " )
+        else:
+            self._cords = [dx_1,dy_1,dz_1]
 
     def get_cords(self):
-        print(f' X:  {self.cords[0]} ')
-        print(f' Y:  {self.cords[1]} ')
-        print(f' Z:  {self.cords[2]} ')
+        print(f' X:  {self._cords[0]} ', end=' ')
+        print(f' Y:  {self._cords[1]} ', end=' ')
+        print(f' Z:  {self._cords[2]} ')
 
     def attack(self):
         if self._DEGREE_OF_DANGER < 5:
             print("Sorry, i'm peaceful :)")
         else:
-            if self._DEGREE_OF_DANGER >= 5:
-                print("Be careful, i'm attacking you 0_0")
+            print("Be careful, i'm attacking you 0_0")
 
-class Bird(Animal):# класс описывающий птиц
+class Bird(Animal):
     beak = True
 
     def lay_eggs(self):
-        self._DEGREE_OF_DANGER = [randint(1,4) for x in range(1)]
+        self._DEGREE_OF_DANGER = randint(1,4)
         print(f'Here are(is) {self._DEGREE_OF_DANGER} eggs for you')
 
-class AquaticAnimal(Animal):# класс описывающий плавающего животного
+class AquaticAnimal(Animal):
     _DEGREE_OF_DANGER = 3
 
-    def dive_in(self, dz): # где dz изм-e коор-ы z в _cords(метод должен всегда уменьшать координату z)
-        dz = self.speed / 2
-        return abs(dz)
+    def dive_in(self,dz):
+        dz_2 = ((dz * self.speed)-abs(dz))*0.5*self.speed
+        self._cords[2] = max(dz_2,0)
 
-class PoisonousAnimal(Animal):# класс описывающий ядовитых животных
+class PoisonousAnimal(Animal):
     _DEGREE_OF_DANGER = 8
 
-class Duckbill(Animal):#класс описывающий утконоса
-    sound = "Click-click-click" # звук, который издаёт утконос
-    def
+class Duckbill(PoisonousAnimal,Bird,AquaticAnimal):
+    sound = "Click-click-click"
+    def __init__(self,speed):
+        super().__init__(speed)
 
-db = Duckbill(10)      # Bird, AquaticAnimal, PoisonousAnimal
+    def speak(self):
+        print(f'{self.sound}')
 
-#print(db.live)
-#print(db.beak)
+db = Duckbill(10)
 
-#db.speak()
-#db.attack()
+print(db.live)
+print(db.beak)
 
-#db.move(1, 2, 3)
-#db.get_cords()
-#db.dive_in(6)
-#db.get_cords()
+db.speak()
+db.attack()
 
-#db.lay_eggs()
+db.move(1, 2, 3)
+db.get_cords()
+db.dive_in(6)
+db.get_cords()
+
+db.lay_eggs()
+
 
 
 
